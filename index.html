@@ -838,149 +838,133 @@
         </div>
     </footer>
 
-    <script>
-        // Loading animation - versiune rapidă și dinamică
-        document.addEventListener('DOMContentLoaded', function () {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const formulaContainer = document.getElementById('formulaContainer');
-            const loadingText = document.getElementById('loadingText');
-            const loadingProgressBar = document.getElementById('loadingProgressBar');
+   <script>
+/* SCRIPT CURAT: loading animation + mobile menu (fără duplicări) */
+document.addEventListener('DOMContentLoaded', function () {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const formulaContainer = document.getElementById('formulaContainer');
+    const loadingText = document.getElementById('loadingText');
+    const loadingProgressBar = document.getElementById('loadingProgressBar');
 
-            // Lista extinsă de formule matematice
-            const formulas = [
-                "a² + b² = c²",
-                "π ≈ 3.14159",
-                "e = mc²",
-                "sin²x + cos²x = 1",
-                "A = πr²",
-                "V = l³",
-                "ax² + bx + c = 0",
-                "F = ma",
-                "A = ½bh",
-                "a³ + b³ = (a+b)(a²-ab+b²)",
-                "logₐ(xy) = logₐx + logₐy",
-                "∫f(x)dx = F(x) + C",
-                "e^{iπ} + 1 = 0",
-                "P = 4l",
-                "C = 2πr",
-                "V = πr²h",
-                "sin(a±b) = sina cosb ± cosa sinb",
-                "(a+b)² = a² + 2ab + b²",
-                "x = [-b ± √(b²-4ac)]/2a",
-                "lim(x→∞) 1/x = 0",
-                "dy/dx = f'(x)",
-                "∑_{i=1}^{n} i = n(n+1)/2",
-                "P(A) = n(A)/n(S)",
-                "∇·E = ρ/ε₀"
-            ];
+    // Lista extinsă de formule matematice
+    const formulas = [
+        "a² + b² = c²",
+        "π ≈ 3.14159",
+        "e = mc²",
+        "sin²x + cos²x = 1",
+        "A = πr²",
+        "V = l³",
+        "ax² + bx + c = 0",
+        "F = ma",
+        "A = ½bh",
+        "a³ + b³ = (a+b)(a²-ab+b²)",
+        "logₐ(xy) = logₐx + logₐy",
+        "∫f(x)dx = F(x) + C",
+        "e^{iπ} + 1 = 0",
+        "P = 4l",
+        "C = 2πr",
+        "V = πr²h",
+        "sin(a±b) = sina cosb ± cosa sinb",
+        "(a+b)² = a² + 2ab + b²",
+        "x = [-b ± √(b²-4ac)]/2a",
+        "lim(x→∞) 1/x = 0",
+        "dy/dx = f'(x)",
+        "∑_{i=1}^{n} i = n(n+1)/2",
+        "P(A) = n(A)/n(S)",
+        "∇·E = ρ/ε₀"
+    ];
 
-            // Tipuri de animații disponibile
-            const animations = ['fall', 'fadeInOut', 'spinIn', 'bounceIn'];
+    const animations = ['fall', 'fadeInOut', 'spinIn', 'bounceIn'];
 
-            // Mesaje de încărcare
-            const loadingMessages = [
-                "Se încarcă resursele de matematică",
-                "Se pregătesc formulele",
-                "Se încarcă exercițiile",
-                "Se optimizează conținutul",
-                "Se verifică teste interactive",
-                "Se completează probleme rezolvate",
-                "Se finalizează simulările",
-                "Gata să începi!"
-            ];
+    const loadingMessages = [
+        "Se încarcă resursele de matematică",
+        "Se pregătesc formulele",
+        "Se încarcă exercițiile",
+        "Se optimizează conținutul",
+        "Se verifică teste interactive",
+        "Se completează probleme rezolvate",
+        "Se finalizează simulările",
+        "Gata să începi!"
+    ];
 
-            let formulasShown = 0;
-            let totalFormulas = 15; // Numărul total de formule de afișat
-            let progress = 0;
+    let formulasShown = 0;
+    const totalFormulas = 15;
+    let progress = 0;
 
-            // Funcție pentru a alege o formulă aleatorie
-            function getRandomFormula() {
-                return formulas[Math.floor(Math.random() * formulas.length)];
-            }
+    function getRandomFormula() {
+        return formulas[Math.floor(Math.random() * formulas.length)];
+    }
 
-            // Funcție pentru a alege o animație aleatorie
-            function getRandomAnimation() {
-                return animations[Math.floor(Math.random() * animations.length)];
-            }
+    function getRandomAnimation() {
+        return animations[Math.floor(Math.random() * animations.length)];
+    }
 
-            // Funcție pentru a afișa o formulă cu animație
-            function showRandomFormula() {
-                if (formulasShown >= totalFormulas) return;
+    function showRandomFormula() {
+        if (formulasShown >= totalFormulas) return;
 
-                const formulaElement = document.createElement('div');
-                formulaElement.className = 'falling-formula';
-                formulaElement.textContent = getRandomFormula();
+        const formulaElement = document.createElement('div');
+        formulaElement.className = 'falling-formula';
+        formulaElement.textContent = getRandomFormula();
 
-                // Poziție aleatorie pe ecran
-                const left = 5 + Math.random() * 85;
-                const top = 10 + Math.random() * 60;
-                formulaElement.style.left = `${left}%`;
-                formulaElement.style.top = `${top}%`;
+        const left = 5 + Math.random() * 85;
+        const top = 10 + Math.random() * 60;
+        formulaElement.style.left = `${left}%`;
+        formulaElement.style.top = `${top}%`;
 
-                // Dimensiune aleatorie
-                const size = 1.5 + Math.random() * 1.5;
-                formulaElement.style.fontSize = `${size}rem`;
+        const size = 1.5 + Math.random() * 1.5;
+        formulaElement.style.fontSize = `${size}rem`;
 
-                // Animație aleatorie
-                const animation = getRandomAnimation();
-                formulaElement.style.animation = `${animation} ${1 + Math.random()}s ease forwards`;
+        const animation = getRandomAnimation();
+        formulaElement.style.animation = `${animation} ${1 + Math.random()}s ease forwards`;
 
-                // Opacitate aleatorie
-                formulaElement.style.opacity = 0.8 + Math.random() * 0.2;
+        formulaElement.style.opacity = 0.8 + Math.random() * 0.2;
 
-                // Culoare aleatorie (nuțuri de albastru/oranj)
-                const colors = [
-                    '#FFFFFF', '#FFD700', '#4FC3F7', '#FF9800', '#E1BEE7',
-                    '#A5D6A7', '#FFCC80', '#80DEEA', '#FFF59D'
-                ];
-                formulaElement.style.color = colors[Math.floor(Math.random() * colors.length)];
+        const colors = [
+            '#FFFFFF', '#FFD700', '#4FC3F7', '#FF9800', '#E1BEE7',
+            '#A5D6A7', '#FFCC80', '#80DEEA', '#FFF59D'
+        ];
+        formulaElement.style.color = colors[Math.floor(Math.random() * colors.length)];
 
-                formulaContainer.appendChild(formulaElement);
-                formulasShown++;
+        formulaContainer.appendChild(formulaElement);
+        formulasShown++;
 
-                // Actualizează progresul
-                progress = (formulasShown / totalFormulas) * 100;
-                loadingProgressBar.style.width = `${progress}%`;
+        progress = (formulasShown / totalFormulas) * 100;
+        loadingProgressBar.style.width = `${progress}%`;
 
-                // Afișează următoarea formulă după un interval aleator
-                const nextDelay = 80 + Math.random() * 120; // 80-200ms
-                setTimeout(showRandomFormula, nextDelay);
-            }
+        const nextDelay = 80 + Math.random() * 120; // 80-200ms
+        setTimeout(showRandomFormula, nextDelay);
+    }
 
-            // Schimbă mesajul de încărcare periodic
-            let messageIndex = 0;
-            function updateLoadingMessage() {
-                loadingText.textContent = loadingMessages[messageIndex];
-                messageIndex = (messageIndex + 1) % loadingMessages.length;
+    let messageIndex = 0;
+    function updateLoadingMessage() {
+        loadingText.textContent = loadingMessages[messageIndex];
+        messageIndex = (messageIndex + 1) % loadingMessages.length;
 
-                // Schimbă mai repede mesajul pe măsură ce progresul avansează
-                const messageDelay = Math.max(300, 800 - (progress * 5));
-                setTimeout(updateLoadingMessage, messageDelay);
-            }
+        const messageDelay = Math.max(300, 800 - (progress * 5));
+        setTimeout(updateLoadingMessage, messageDelay);
+    }
 
-            // Începe animația
-            updateLoadingMessage();
-            showRandomFormula();
+    // Start loading animation
+    updateLoadingMessage();
+    showRandomFormula();
 
-            // Ascunde animația de încărcare după 2-3 secunde (mult mai rapid)
-            const minLoadingTime = 2000; // 2 secunde
-            const maxLoadingTime = 3000; // 3 secunde
+    const minLoadingTime = 2000; // 2s
+    const maxLoadingTime = 3000; // 3s
 
-            setTimeout(() => {
-                loadingOverlay.classList.add('hidden');
+    setTimeout(() => {
+        // Fade out then hide
+        loadingOverlay.classList.add('hidden');
+        setTimeout(() => {
+            loadingOverlay.style.display = 'none';
+        }, 500);
+    }, minLoadingTime + Math.random() * (maxLoadingTime - minLoadingTime));
 
-                // Îndepărtează overlay-ul după ce animația de fade out se termină
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                }, 500);
-            }, minLoadingTime + Math.random() * (maxLoadingTime - minLoadingTime));
+    /* Mobile menu functionality - declarat O SINGURA DATĂ aici */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-            
-
-        
-        const mobileMenuClose = document.getElementById('mobileMenuClose');
-        const mobileMenu = document.getElementById('mobileMenu');
-
+    if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.add('active');
         });
@@ -996,25 +980,28 @@
                 mobileMenu.classList.remove('active');
             });
         });
+    }
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+    // Smooth scroll for anchor links (desktop + mobile)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
 
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
 
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
         });
-    </script>
+    });
+}); // <--- Închidere corectă pentru DOMContentLoaded
+</script>
+
 </body>
 
 </html>
