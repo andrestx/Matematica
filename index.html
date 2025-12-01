@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,21 +13,26 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
             overflow-x: hidden;
         }
-        
+
+        @media (min-width: 769px) {
+            .mobile-menu.active {
+                display: none !important;
+            }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
-        /* Loading animation */
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -39,52 +45,155 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.8s, visibility 0.8s;
+            transition: opacity 0.5s, visibility 0.5s;
         }
-        
-        .loading-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
+
         .formula-container {
             position: relative;
             width: 100%;
             height: 200px;
             margin-bottom: 40px;
         }
-        
+
         .falling-formula {
             position: absolute;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
             color: #fff;
             opacity: 0;
-            animation: fall 2s forwards;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+            user-select: none;
         }
-        
+
+        /* Animații diferite pentru formule */
         @keyframes fall {
             0% {
                 opacity: 0;
-                transform: translateY(-100px) rotate(0deg);
+                transform: translateY(-100px) rotate(-10deg) scale(0.5);
             }
+
+            20% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(100px) rotate(10deg) scale(0.5);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
             50% {
                 opacity: 1;
+                transform: scale(1.1);
             }
+
             100% {
-                opacity: 1;
-                transform: translateY(0) rotate(360deg);
+                opacity: 0;
+                transform: scale(0.8);
             }
         }
-        
+
+        @keyframes spinIn {
+            0% {
+                opacity: 0;
+                transform: rotate(-180deg) scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: rotate(0) scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: rotate(180deg) scale(0);
+            }
+        }
+
+        @keyframes bounceIn {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.5);
+            }
+
+            30%,
+            70% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+
         .loading-text {
             color: white;
-            font-size: 1.5rem;
-            margin-top: 20px;
+            font-size: 1.8rem;
+            margin-top: 40px;
             text-align: center;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
-        
+
+        .loading-text:after {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #ff9800;
+            border-radius: 50%;
+            margin-left: 5px;
+            animation: dotPulse 1.5s infinite;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .loading-progress {
+            width: 300px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
         /* Header & Navigation */
         header {
             background: linear-gradient(to right, #1a237e, #4a148c);
@@ -95,35 +204,35 @@
             top: 0;
             z-index: 100;
         }
-        
+
         .logo {
             display: flex;
             align-items: center;
             font-size: 1.8rem;
             font-weight: 700;
         }
-        
+
         .logo i {
             margin-right: 10px;
             color: #ff9800;
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .main-menu {
             display: flex;
             list-style: none;
         }
-        
+
         .main-menu li {
             margin-left: 1.5rem;
             position: relative;
         }
-        
+
         .main-menu a {
             color: white;
             text-decoration: none;
@@ -133,40 +242,40 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
-        
+
         .main-menu a:hover {
             background-color: rgba(255, 255, 255, 0.1);
             color: #ff9800;
         }
-        
+
         .dropdown-content {
             display: none;
             position: absolute;
             background-color: white;
             min-width: 220px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             border-radius: 4px;
             z-index: 1;
             top: 100%;
             left: 0;
         }
-        
+
         .dropdown-content a {
             color: #333;
             padding: 12px 16px;
             display: block;
             border-bottom: 1px solid #f1f1f1;
         }
-        
+
         .dropdown-content a:hover {
             background-color: #f1f1f1;
             color: #1a237e;
         }
-        
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
-        
+
         /* Hero Section */
         .hero {
             background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(74, 20, 140, 0.9)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
@@ -177,19 +286,19 @@
             text-align: center;
             margin-bottom: 3rem;
         }
-        
+
         .hero h1 {
             font-size: 3.2rem;
             margin-bottom: 1rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-        
+
         .hero p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 2rem;
         }
-        
+
         .cta-button {
             display: inline-block;
             background-color: #ff9800;
@@ -202,18 +311,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
         }
-        
+
         .cta-button:hover {
             background-color: #ff5722;
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(255, 87, 34, 0.5);
         }
-        
+
         /* Content Sections */
         .content-section {
             padding: 3rem 0;
         }
-        
+
         .section-title {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -221,7 +330,7 @@
             font-size: 2.2rem;
             position: relative;
         }
-        
+
         .section-title:after {
             content: '';
             display: block;
@@ -231,14 +340,14 @@
             margin: 10px auto;
             border-radius: 2px;
         }
-        
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 4rem;
         }
-        
+
         .feature-card {
             background-color: white;
             border-radius: 10px;
@@ -247,24 +356,24 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-align: center;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
         .feature-icon {
             font-size: 3rem;
             color: #4a148c;
             margin-bottom: 1rem;
         }
-        
+
         .feature-card h3 {
             color: #1a237e;
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
-        
+
         /* Grade cards */
         .grade-cards {
             display: grid;
@@ -272,7 +381,7 @@
             gap: 2rem;
             margin-bottom: 4rem;
         }
-        
+
         .grade-card {
             background-color: white;
             border-radius: 10px;
@@ -280,40 +389,40 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease;
         }
-        
+
         .grade-card:hover {
             transform: translateY(-10px);
         }
-        
+
         .grade-header {
             background: linear-gradient(to right, #1a237e, #4a148c);
             color: white;
             padding: 1.5rem;
             text-align: center;
         }
-        
+
         .grade-header h3 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
-        
+
         .grade-content {
             padding: 1.5rem;
         }
-        
+
         .grade-content ul {
             list-style: none;
         }
-        
+
         .grade-content li {
             padding: 8px 0;
             border-bottom: 1px solid #f1f1f1;
         }
-        
+
         .grade-content li:last-child {
             border-bottom: none;
         }
-        
+
         .grade-content a {
             color: #333;
             text-decoration: none;
@@ -321,11 +430,11 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .grade-content a:hover {
             color: #1a237e;
         }
-        
+
         /* Footer */
         footer {
             background-color: #1a237e;
@@ -333,38 +442,38 @@
             padding: 3rem 0 1.5rem;
             margin-top: 3rem;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .footer-section h3 {
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
             color: #ff9800;
         }
-        
+
         .footer-section ul {
             list-style: none;
         }
-        
+
         .footer-section ul li {
             margin-bottom: 0.8rem;
         }
-        
+
         .footer-section a {
             color: #ddd;
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        
+
         .footer-section a:hover {
             color: #ff9800;
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 1.5rem;
@@ -372,17 +481,17 @@
             font-size: 0.9rem;
             color: #aaa;
         }
-        
+
         /* Responsive design */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .main-menu {
                 display: none;
             }
-            
+
             .mobile-menu-btn {
                 display: block;
                 background: none;
@@ -391,7 +500,7 @@
                 font-size: 1.5rem;
                 cursor: pointer;
             }
-            
+
             .mobile-menu {
                 position: fixed;
                 top: 0;
@@ -404,11 +513,11 @@
                 padding: 2rem;
                 overflow-y: auto;
             }
-            
+
             .mobile-menu.active {
                 left: 0;
             }
-            
+
             .mobile-menu-close {
                 background: none;
                 border: none;
@@ -419,16 +528,16 @@
                 right: 1rem;
                 cursor: pointer;
             }
-            
+
             .mobile-menu ul {
                 list-style: none;
                 margin-top: 2rem;
             }
-            
+
             .mobile-menu ul li {
                 margin-bottom: 1rem;
             }
-            
+
             .mobile-menu a {
                 color: white;
                 text-decoration: none;
@@ -438,7 +547,7 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
         }
-        
+
         @media (min-width: 769px) {
             .mobile-menu-btn {
                 display: none;
@@ -446,13 +555,17 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Loading Animation -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="formula-container" id="formulaContainer">
             <!-- Formulele vor fi adăugate din JavaScript -->
         </div>
-        <div class="loading-text" id="loadingText">Se încarcă resursele de matematică...</div>
+        <div class="loading-text" id="loadingText">Se încarcă resursele de matematică</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="loadingProgressBar"></div>
+        </div>
     </div>
 
     <!-- Header & Navigation -->
@@ -463,11 +576,11 @@
                     <i class="fas fa-square-root-alt"></i>
                     <span>Matematică Liceu</span>
                 </div>
-                
+
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
                 </button>
-                
+
                 <ul class="main-menu">
                     <li><a href="#home">Acasă</a></li>
                     <li class="dropdown">
@@ -523,7 +636,7 @@
                 </ul>
             </nav>
         </div>
-        
+
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu">
             <button class="mobile-menu-close" id="mobileMenuClose">
@@ -544,7 +657,8 @@
     <section class="hero" id="home">
         <div class="container">
             <h1>Matematică pentru Liceu</h1>
-            <p>Resurse complete pentru elevii de liceu (clasele 9-12) și pregătirea pentru examenul de bacalaureat. Teorie, exerciții rezolvate, teste și simulări.</p>
+            <p>Resurse complete pentru elevii de liceu (clasele 9-12) și pregătirea pentru examenul de bacalaureat.
+                Teorie, exerciții rezolvate, teste și simulări.</p>
             <a href="#grades" class="cta-button">Explorează materia</a>
         </div>
     </section>
@@ -562,7 +676,7 @@
                     <h3>Teorie completă</h3>
                     <p>Toate capitolele din programa școlară, explicate pas cu pas, cu exemple și aplicații.</p>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-calculator"></i>
@@ -570,7 +684,7 @@
                     <h3>Exerciții rezolvate</h3>
                     <p>Mii de probleme rezolvate pas cu pas, de la cele simple până la cele de olimpiadă.</p>
                 </div>
-                
+
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-graduation-cap"></i>
@@ -596,12 +710,13 @@
                             <li><a href="#">Mulțimi și operații cu mulțimi <i class="fas fa-arrow-right"></i></a></li>
                             <li><a href="#">Funcții <i class="fas fa-arrow-right"></i></a></li>
                             <li><a href="#">Ecuații și inecuații <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#">Progresii aritmetice și geometrice <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Progresii aritmetice și geometrice <i class="fas fa-arrow-right"></i></a>
+                            </li>
                             <li><a href="#">Trigonometrie <i class="fas fa-arrow-right"></i></a></li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <!-- Clasa X -->
                 <div class="grade-card">
                     <div class="grade-header">
@@ -610,7 +725,8 @@
                     </div>
                     <div class="grade-content">
                         <ul>
-                            <li><a href="#">Funcții exponențiale și logaritmice <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Funcții exponențiale și logaritmice <i class="fas fa-arrow-right"></i></a>
+                            </li>
                             <li><a href="#">Funcții trigonometrice <i class="fas fa-arrow-right"></i></a></li>
                             <li><a href="#">Geometrie analitică <i class="fas fa-arrow-right"></i></a></li>
                             <li><a href="#">Combinatorică <i class="fas fa-arrow-right"></i></a></li>
@@ -618,7 +734,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <!-- Clasa XI -->
                 <div class="grade-card">
                     <div class="grade-header">
@@ -635,7 +751,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <!-- Clasa XII -->
                 <div class="grade-card">
                     <div class="grade-header">
@@ -652,7 +768,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <!-- Bacalaureat -->
                 <div class="grade-card">
                     <div class="grade-header">
@@ -679,9 +795,10 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Matematică Liceu</h3>
-                    <p>Cel mai complet site de matematică pentru elevii de liceu. Resurse gratuite pentru clasele 9-12 și pregătirea pentru bacalaureat.</p>
+                    <p>Cel mai complet site de matematică pentru elevii de liceu. Resurse gratuite pentru clasele 9-12
+                        și pregătirea pentru bacalaureat.</p>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Linkuri rapide</h3>
                     <ul>
@@ -693,7 +810,7 @@
                         <li><a href="#">Bacalaureat</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Resurse utile</h3>
                     <ul>
@@ -704,7 +821,7 @@
                         <li><a href="#">Video-lecții</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Contact</h3>
                     <ul>
@@ -714,7 +831,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="copyright">
                 <p>&copy; 2023 Matematică Liceu. Toate drepturile rezervate.</p>
             </div>
@@ -722,13 +839,14 @@
     </footer>
 
     <script>
-        // Loading animation
-        document.addEventListener('DOMContentLoaded', function() {
+        // Loading animation - versiune rapidă și dinamică
+        document.addEventListener('DOMContentLoaded', function () {
             const loadingOverlay = document.getElementById('loadingOverlay');
             const formulaContainer = document.getElementById('formulaContainer');
             const loadingText = document.getElementById('loadingText');
-            
-            // Lista de formule matematice care vor cădea
+            const loadingProgressBar = document.getElementById('loadingProgressBar');
+
+            // Lista extinsă de formule matematice
             const formulas = [
                 "a² + b² = c²",
                 "π ≈ 3.14159",
@@ -738,53 +856,138 @@
                 "V = l³",
                 "ax² + bx + c = 0",
                 "F = ma",
-                "E = mc²",
-                "a³ + b³ = (a+b)(a²-ab+b²)"
+                "A = ½bh",
+                "a³ + b³ = (a+b)(a²-ab+b²)",
+                "logₐ(xy) = logₐx + logₐy",
+                "∫f(x)dx = F(x) + C",
+                "e^{iπ} + 1 = 0",
+                "P = 4l",
+                "C = 2πr",
+                "V = πr²h",
+                "sin(a±b) = sina cosb ± cosa sinb",
+                "(a+b)² = a² + 2ab + b²",
+                "x = [-b ± √(b²-4ac)]/2a",
+                "lim(x→∞) 1/x = 0",
+                "dy/dx = f'(x)",
+                "∑_{i=1}^{n} i = n(n+1)/2",
+                "P(A) = n(A)/n(S)",
+                "∇·E = ρ/ε₀"
             ];
-            
-            // Adaugă formulele pe ecran cu animație de cădere
-            formulas.forEach((formula, index) => {
+
+            // Tipuri de animații disponibile
+            const animations = ['fall', 'fadeInOut', 'spinIn', 'bounceIn'];
+
+            // Mesaje de încărcare
+            const loadingMessages = [
+                "Se încarcă resursele de matematică",
+                "Se pregătesc formulele",
+                "Se încarcă exercițiile",
+                "Se optimizează conținutul",
+                "Se verifică teste interactive",
+                "Se completează probleme rezolvate",
+                "Se finalizează simulările",
+                "Gata să începi!"
+            ];
+
+            let formulasShown = 0;
+            let totalFormulas = 15; // Numărul total de formule de afișat
+            let progress = 0;
+
+            // Funcție pentru a alege o formulă aleatorie
+            function getRandomFormula() {
+                return formulas[Math.floor(Math.random() * formulas.length)];
+            }
+
+            // Funcție pentru a alege o animație aleatorie
+            function getRandomAnimation() {
+                return animations[Math.floor(Math.random() * animations.length)];
+            }
+
+            // Funcție pentru a afișa o formulă cu animație
+            function showRandomFormula() {
+                if (formulasShown >= totalFormulas) return;
+
                 const formulaElement = document.createElement('div');
                 formulaElement.className = 'falling-formula';
-                formulaElement.textContent = formula;
-                formulaElement.style.left = `${10 + (index % 5) * 20}%`;
-                formulaElement.style.animationDelay = `${index * 0.5}s`;
+                formulaElement.textContent = getRandomFormula();
+
+                // Poziție aleatorie pe ecran
+                const left = 5 + Math.random() * 85;
+                const top = 10 + Math.random() * 60;
+                formulaElement.style.left = `${left}%`;
+                formulaElement.style.top = `${top}%`;
+
+                // Dimensiune aleatorie
+                const size = 1.5 + Math.random() * 1.5;
+                formulaElement.style.fontSize = `${size}rem`;
+
+                // Animație aleatorie
+                const animation = getRandomAnimation();
+                formulaElement.style.animation = `${animation} ${1 + Math.random()}s ease forwards`;
+
+                // Opacitate aleatorie
+                formulaElement.style.opacity = 0.8 + Math.random() * 0.2;
+
+                // Culoare aleatorie (nuțuri de albastru/oranj)
+                const colors = [
+                    '#FFFFFF', '#FFD700', '#4FC3F7', '#FF9800', '#E1BEE7',
+                    '#A5D6A7', '#FFCC80', '#80DEEA', '#FFF59D'
+                ];
+                formulaElement.style.color = colors[Math.floor(Math.random() * colors.length)];
+
                 formulaContainer.appendChild(formulaElement);
-            });
-            
-            // Schimbă textul de încărcare
-            const loadingMessages = [
-                "Se încarcă resursele de matematică...",
-                "Se pregătesc formulele...",
-                "Se încarcă exercițiile...",
-                "Aproape gata..."
-            ];
-            
+                formulasShown++;
+
+                // Actualizează progresul
+                progress = (formulasShown / totalFormulas) * 100;
+                loadingProgressBar.style.width = `${progress}%`;
+
+                // Afișează următoarea formulă după un interval aleator
+                const nextDelay = 80 + Math.random() * 120; // 80-200ms
+                setTimeout(showRandomFormula, nextDelay);
+            }
+
+            // Schimbă mesajul de încărcare periodic
             let messageIndex = 0;
-            const messageInterval = setInterval(() => {
+            function updateLoadingMessage() {
                 loadingText.textContent = loadingMessages[messageIndex];
                 messageIndex = (messageIndex + 1) % loadingMessages.length;
-            }, 1500);
-            
-            // Ascunde animația de încărcare după 5 secunde
+
+                // Schimbă mai repede mesajul pe măsură ce progresul avansează
+                const messageDelay = Math.max(300, 800 - (progress * 5));
+                setTimeout(updateLoadingMessage, messageDelay);
+            }
+
+            // Începe animația
+            updateLoadingMessage();
+            showRandomFormula();
+
+            // Ascunde animația de încărcare după 2-3 secunde (mult mai rapid)
+            const minLoadingTime = 2000; // 2 secunde
+            const maxLoadingTime = 3000; // 3 secunde
+
             setTimeout(() => {
-                clearInterval(messageInterval);
                 loadingOverlay.classList.add('hidden');
-            }, 5000);
-            
-            // Mobile menu functionality
+
+                // Îndepărtează overlay-ul după ce animația de fade out se termină
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 500);
+            }, minLoadingTime + Math.random() * (maxLoadingTime - minLoadingTime));
+
+            // Mobile menu functionality (păstrează aceeași funcționalitate)
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenuClose = document.getElementById('mobileMenuClose');
             const mobileMenu = document.getElementById('mobileMenu');
-            
+
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.add('active');
             });
-            
+
             mobileMenuClose.addEventListener('click', () => {
                 mobileMenu.classList.remove('active');
             });
-            
+
             // Close mobile menu when clicking on a link
             const mobileMenuLinks = mobileMenu.querySelectorAll('a');
             mobileMenuLinks.forEach(link => {
@@ -792,17 +995,17 @@
                     mobileMenu.classList.remove('active');
                 });
             });
-            
+
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
+
                     const targetId = this.getAttribute('href');
-                    if(targetId === '#') return;
-                    
+                    if (targetId === '#') return;
+
                     const targetElement = document.querySelector(targetId);
-                    if(targetElement) {
+                    if (targetElement) {
                         window.scrollTo({
                             top: targetElement.offsetTop - 80,
                             behavior: 'smooth'
@@ -811,6 +1014,46 @@
                 });
             });
         });
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
+
 </html>
