@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasa a IX-a - Mulțimi și Operații cu Mulțimi | Matematică Liceu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to right, #1a237e, #4a148c);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #ff9800;
+            animation: rotateIn 1s ease-out;
+        }
+        
+        @keyframes rotateIn {
+            from { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+            to { transform: rotate(0) scale(1); opacity: 1; }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .main-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .main-menu li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-menu a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background-color: #ff9800;
+            transition: left 0.3s ease;
+        }
+        
+        .main-menu a:hover:before {
+            left: 0;
+        }
+        
+        .main-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ff9800;
+            transform: translateY(-2px);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: #e8eaf6;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .breadcrumb ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .breadcrumb li {
+            margin-right: 0.5rem;
+            opacity: 0;
+            animation: fadeInRight 0.5s ease-out forwards;
+        }
+        
+        .breadcrumb li:nth-child(1) { animation-delay: 0.1s; }
+        .breadcrumb li:nth-child(2) { animation-delay: 0.2s; }
+        .breadcrumb li:nth-child(3) { animation-delay: 0.3s; }
+        
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: #777;
+        }
+        
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+        
+        .breadcrumb a {
+            color: #1a237e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            color: #4a148c;
+        }
+        
+        .breadcrumb .current {
+            color: #4a148c;
+            font-weight: 600;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(to right, #e8eaf6, #f3e5f5);
+            border-radius: 10px;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #1a237e, #4a148c, #ff9800);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .page-header h1 {
+            color: #1a237e;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Lesson Navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out 0.6s both;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .lesson-nav a {
+            display: flex;
+            align-items: center;
+            color: #1a237e;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lesson-nav a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.7s;
+        }
+        
+        .lesson-nav a:hover:before {
+            left: 100%;
+        }
+        
+        .lesson-nav a:hover {
+            background-color: #e8eaf6;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 35, 126, 0.15);
+        }
+        
+        .lesson-nav .prev i {
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .lesson-nav .prev:hover i {
+            transform: translateX(-5px);
+        }
+        
+        .lesson-nav .next i {
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .lesson-nav .next:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .content-section:nth-child(1) { animation-delay: 0.8s; }
+        .content-section:nth-child(2) { animation-delay: 1.0s; }
+        .content-section:nth-child(3) { animation-delay: 1.2s; }
+        .content-section:nth-child(4) { animation-delay: 1.4s; }
+        
+        .section-title {
+            color: #1a237e;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #ff9800;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #4a148c;
+            animation: expandLine 1.5s ease-out 0.5s forwards;
+        }
+        
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .theory-box, .example-box, .exercise-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .theory-box:hover, .example-box:hover, .exercise-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theory-box:nth-child(1) { animation-delay: 0.9s; }
+        .theory-box:nth-child(2) { animation-delay: 1.1s; }
+        .example-box { animation-delay: 1.3s; }
+        .exercise-box:nth-child(1) { animation-delay: 1.5s; }
+        .exercise-box:nth-child(2) { animation-delay: 1.7s; }
+        
+        .theory-box:before, .example-box:before, .exercise-box:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .theory-box:before {
+            background-color: #2196f3;
+        }
+        
+        .example-box:before {
+            background-color: #4caf50;
+        }
+        
+        .exercise-box:before {
+            background-color: #ff9800;
+        }
+        
+        .box-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .box-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .theory-box .box-title i {
+            color: #2196f3;
+        }
+        
+        .example-box .box-title i {
+            color: #4caf50;
+        }
+        
+        .exercise-box .box-title i {
+            color: #ff9800;
+        }
+        
+        /* Subliniere animată pentru informații importante */
+        .highlight-underlined {
+            position: relative;
+            display: inline;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .highlight-underlined:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff9800, #ff5722);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .highlight-underlined.animate-in:after {
+            animation: underlineExpand 0.8s ease-out forwards;
+        }
+        
+        .highlight-underlined:hover:after {
+            transform: scaleX(1);
+            animation: none;
+        }
+        
+        @keyframes underlineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        /* Subliniere cu efect de umbră */
+        .highlight-shadow {
+            position: relative;
+            display: inline;
+            font-weight: 600;
+            color: #1a237e;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+        }
+        
+        .highlight-shadow:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #4a148c, transparent);
+            border-radius: 2px;
+            opacity: 0.7;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .highlight-shadow.animate-in:after {
+            animation: shadowUnderline 0.8s ease-out forwards;
+        }
+        
+        @keyframes shadowUnderline {
+            0% { transform: scaleX(0); opacity: 0; }
+            50% { transform: scaleX(1); opacity: 0.7; }
+            100% { transform: scaleX(1); opacity: 0.7; }
+        }
+        
+        /* Subliniere punctată animată */
+        .highlight-dotted {
+            position: relative;
+            display: inline;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .highlight-dotted:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: linear-gradient(90deg, #2196f3 50%, transparent 50%);
+            background-size: 8px 2px;
+            background-repeat: repeat-x;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .highlight-dotted.animate-in:after {
+            animation: dottedUnderline 1s ease-out forwards;
+        }
+        
+        @keyframes dottedUnderline {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        /* Subliniere dublă */
+        .highlight-double {
+            position: relative;
+            display: inline;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .highlight-double:before,
+        .highlight-double:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ff9800;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .highlight-double:after {
+            bottom: -8px;
+            background-color: #4a148c;
+            width: 70%;
+            left: 15%;
+            transition-delay: 0.1s;
+        }
+        
+        .highlight-double.animate-in:before {
+            animation: doubleUnderline1 0.8s ease-out forwards;
+        }
+        
+        .highlight-double.animate-in:after {
+            animation: doubleUnderline2 0.8s ease-out 0.2s forwards;
+        }
+        
+        @keyframes doubleUnderline1 {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        @keyframes doubleUnderline2 {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        /* Subliniere cu efect de undă */
+        .highlight-wave {
+            position: relative;
+            display: inline;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .highlight-wave:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #2196f3, #4a148c, #ff9800);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .highlight-wave.animate-in:after {
+            animation: waveUnderline 1s ease-out forwards;
+        }
+        
+        .highlight-wave:hover:after {
+            animation: waveMotion 0.8s infinite;
+        }
+        
+        @keyframes waveUnderline {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        @keyframes waveMotion {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .definition {
+            background-color: #e3f2fd;
+            padding: 1.5rem;
+            border-left: 4px solid #2196f3;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .definition:hover {
+            transform: translateX(5px);
+        }
+        
+        .definition:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .definition:hover:before {
+            transform: translateX(100%);
+        }
+        
+        .definition h4 {
+            color: #0d47a1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .important {
+            background-color: #fff3e0;
+            padding: 1.5rem;
+            border-left: 4px solid #ff9800;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .important:hover {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .important h4 {
+            color: #e65100;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Operation Cards */
+        .operation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .operation-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.6s ease-out forwards;
+        }
+        
+        .operation-card:nth-child(1) { animation-delay: 1.0s; }
+        .operation-card:nth-child(2) { animation-delay: 1.1s; }
+        .operation-card:nth-child(3) { animation-delay: 1.2s; }
+        .operation-card:nth-child(4) { animation-delay: 1.3s; }
+        
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .operation-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .operation-card h4 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .operation-card h4 i {
+            margin-right: 10px;
+            color: #4a148c;
+            transition: transform 0.3s ease;
+        }
+        
+        .operation-card:hover h4 i {
+            transform: rotate(15deg) scale(1.2);
+        }
+        
+        /* Exercise Content */
+        .exercise-content {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-content:hover {
+            background-color: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .solution-btn {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution-btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .solution-btn:hover:before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .solution-btn:hover {
+            background-color: #388e3c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(56, 142, 60, 0.4);
+        }
+        
+        .solution {
+            background-color: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #4caf50;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+        }
+        
+        .solution.show {
+            max-height: 1000px;
+            padding: 1.5rem;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Bac Section */
+        .bac-section {
+            background: linear-gradient(to right, #1a237e, #4a148c);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.8s forwards;
+        }
+        
+        .bac-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ff9800;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .bac-exercise {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .bac-exercise:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .bac-exercise:last-child {
+            margin-bottom: 0;
+        }
+        
+        .bac-exercise p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1a237e;
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+            animation: fadeIn 0.8s ease-out 2s both;
+            opacity: 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ff9800;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .footer-section ul li:nth-child(1) { animation-delay: 2.1s; }
+        .footer-section ul li:nth-child(2) { animation-delay: 2.2s; }
+        .footer-section ul li:nth-child(3) { animation-delay: 2.3s; }
+        .footer-section ul li:nth-child(4) { animation-delay: 2.4s; }
+        .footer-section ul li:nth-child(5) { animation-delay: 2.5s; }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 0;
+            transition: padding-left 0.3s ease;
+        }
+        
+        .footer-section a:before {
+            content: '›';
+            position: absolute;
+            left: -10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #ff9800;
+            padding-left: 15px;
+        }
+        
+        .footer-section a:hover:before {
+            opacity: 1;
+            left: 0;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Math symbols styling - cu animație */
+        .math-symbol {
+            font-family: "Times New Roman", serif;
+            font-weight: bold;
+            font-style: italic;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .math-symbol:hover {
+            animation: bounce 0.5s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .math-expression {
+            font-family: "Times New Roman", serif;
+            font-size: 1.1rem;
+            background-color: #f5f5f5;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .math-expression:hover {
+            background-color: #e8eaf6;
+            border-color: #1a237e;
+            transform: scale(1.02);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-menu {
+                display: none;
+            }
+            
+            .lesson-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .lesson-nav a {
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .operation-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Reduce animațiile pe mobile pentru performanță */
+            * {
+                animation-duration: 0.5s !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+        
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Matematică Liceu</span>
+                </div>
+                
+                <ul class="main-menu">
+                    <li><a href="index.html">Acasă</a></li>
+                    <li><a href="clasa9.html">Clasa IX</a></li>
+                    <li><a href="clasa10.html">Clasa X</a></li>
+                    <li><a href="clasa11.html">Clasa XI</a></li>
+                    <li><a href="clasa12.html">Clasa XII</a></li>
+                    <li><a href="bac.html">Bacalaureat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Acasă</a></li>
+                <li><a href="clasa9.html">Clasa a IX-a</a></li>
+                <li class="current">Mulțimi și Operații cu Mulțimi</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Mulțimi și Operații cu Mulțimi</h1>
+            <p>Prima lecție din clasa a IX-a - noțiuni de bază, proprietăți și operații cu mulțimi</p>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="#" class="prev"><i class="fas fa-arrow-left"></i> Lecția anterioară</a>
+            <a href="#" class="next">Lecția următoare <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Teorie -->
+        <div class="content-section reveal">
+            <h2 class="section-title">Teorie</h2>
+            
+            <div class="theory-box">
+                <div class="box-title">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Noțiunea de mulțime</h3>
+                </div>
+                
+                <p>O <span class="highlight-underlined">mulțime</span> este o colecție de obiecte bine definite și distincte, numite <span class="highlight-wave">elementele</span> mulțimii.</p>
+                
+                <div class="definition">
+                    <h4>Definiție:</h4>
+                    <p>Mulțimile se notează cu <span class="highlight-shadow">litere mari</span>: A, B, C, ..., iar elementele lor se notează cu <span class="highlight-shadow">litere mici</span>: a, b, c, ...</p>
+                    <p>Dacă un element <span class="math-symbol">a</span> aparține mulțimii <span class="math-symbol">A</span>, scriem <span class="math-expression">a ∈ A</span>.</p>
+                    <p>Dacă un element <span class="math-symbol">b</span> nu aparține mulțimii <span class="math-symbol">A</span>, scriem <span class="math-expression">b ∉ A</span>.</p>
+                </div>
+                
+                <div class="important">
+                    <h4>Important:</h4>
+                    <p>Într-o mulțime, <span class="highlight-double">ordinea elementelor</span> nu contează, iar <span class="highlight-dotted">fiecare element apare o singură dată</span>.</p>
+                    <p>Exemplu: {1, 2, 3} = {3, 1, 2} = {1, 2, 2, 3, 1}</p>
+                </div>
+            </div>
+            
+            <div class="theory-box">
+                <div class="box-title">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Relații între mulțimi</h3>
+                </div>
+                
+                <div class="operation-cards">
+                    <div class="operation-card">
+                        <h4><i class="fas fa-equals"></i> <span class="highlight-underlined">Egalitatea</span> mulțimilor</h4>
+                        <p>Două mulțimi sunt <span class="highlight-shadow">egale</span> dacă au aceleași elemente.</p>
+                        <p class="math-expression">A = B ⇔ (∀x, x ∈ A ↔ x ∈ B)</p>
+                    </div>
+                    
+                    <div class="operation-card">
+                        <h4><i class="fas fa-subscript"></i> <span class="highlight-underlined">Incluziunea</span></h4>
+                        <p>O mulțime A este <span class="highlight-wave">inclusă</span> în mulțimea B dacă toate elementele lui A sunt și în B.</p>
+                        <p class="math-expression">A ⊆ B ⇔ (∀x, x ∈ A → x ∈ B)</p>
+                    </div>
+                    
+                    <div class="operation-card">
+                        <h4><i class="fas fa-subscript"></i> <span class="highlight-underlined">Incluziunea strictă</span></h4>
+                        <p>O mulțime A este <span class="highlight-double">strict inclusă</span> în B dacă A ⊆ B și A ≠ B.</p>
+                        <p class="math-expression">A ⊂ B ⇔ (A ⊆ B și A ≠ B)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemple -->
+        <div class="content-section reveal">
+            <h2 class="section-title">Exemple</h2>
+            
+            <div class="example-box">
+                <div class="box-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Exemple de mulțimi</h3>
+                </div>
+                
+                <div class="exercise-content">
+                    <p><strong>Exemplul 1:</strong> Fie mulțimea <span class="highlight-shadow">A = {1, 3, 5, 7, 9}</span></p>
+                    <p>Atunci: <span class="highlight-underlined">3 ∈ A</span>, <span class="highlight-underlined">5 ∈ A</span>, dar <span class="highlight-dotted">2 ∉ A</span>, <span class="highlight-dotted">6 ∉ A</span></p>
+                </div>
+                
+                <div class="exercise-content">
+                    <p><strong>Exemplul 2:</strong> Fie mulțimile:</p>
+                    <p>B = {x | x este <span class="highlight-wave">număr natural par</span>, x < 10} = {0, 2, 4, 6, 8}</p>
+                    <p>C = {2, 4, 6, 8, 0} (aceleași elemente ca B, dar în altă ordine)</p>
+                    <p>Concluzie: <span class="highlight-double">B = C</span> (sunt mulțimi egale)</p>
+                </div>
+                
+                <div class="exercise-content">
+                    <p><strong>Exemplul 3:</strong> Relații de incluziune</p>
+                    <p>D = {1, 2, 3}, E = {1, 2, 3, 4, 5}, F = {1, 2, 3}</p>
+                    <p>• <span class="highlight-underlined">D ⊆ E</span> (adevărat, toate elementele lui D sunt în E)</p>
+                    <p>• <span class="highlight-shadow">D ⊂ E</span> (adevărat, D este inclus strict în E)</p>
+                    <p>• <span class="highlight-wave">D ⊆ F</span> (adevărat, au exact aceleași elemente)</p>
+                    <p>• <span class="highlight-dotted">D ⊂ F</span> (fals, pentru că D = F)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operații cu mulțimi -->
+        <div class="content-section reveal">
+            <h2 class="section-title">Operații cu mulțimi</h2>
+            
+            <div class="theory-box">
+                <div class="box-title">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Operații fundamentale</h3>
+                </div>
+                
+                <div class="operation-cards">
+                    <div class="operation-card">
+                        <h4><i class="fas fa-union"></i> <span class="highlight-underlined">Reuniunea</span></h4>
+                        <p>Reuniunea a două mulțimi A și B este mulțimea elementelor care aparțin lui A <span class="highlight-shadow">sau</span> lui B.</p>
+                        <p class="math-expression">A ∪ B = {x | x ∈ A sau x ∈ B}</p>
+                    </div>
+                    
+                    <div class="operation-card">
+                        <h4><i class="fas fa-intersection"></i> <span class="highlight-wave">Intersecția</span></h4>
+                        <p>Intersecția a două mulțimi A și B este mulțimea elementelor care aparțin <span class="highlight-double">atât lui A cât și lui B</span>.</p>
+                        <p class="math-expression">A ∩ B = {x | x ∈ A și x ∈ B}</p>
+                    </div>
+                    
+                    <div class="operation-card">
+                        <h4><i class="fas fa-minus"></i> <span class="highlight-dotted">Diferența</span></h4>
+                        <p>Diferența mulțimilor A și B este mulțimea elementelor care aparțin lui A <span class="highlight-shadow">dar nu</span> aparțin lui B.</p>
+                        <p class="math-expression">A \ B = {x | x ∈ A și x ∉ B}</p>
+                    </div>
+                    
+                    <div class="operation-card">
+                        <h4><i class="fas fa-complement"></i> <span class="highlight-underlined">Complementara</span></h4>
+                        <p>Complementara mulțimii A în raport cu mulțimea E (universul) este mulțimea elementelor din E care <span class="highlight-wave">nu sunt în A</span>.</p>
+                        <p class="math-expression">C_E(A) = E \ A = {x ∈ E | x ∉ A}</p>
+                    </div>
+                </div>
+                
+                <div class="important">
+                    <h4>Proprietăți importante:</h4>
+                    <p>1. <span class="highlight-underlined">Comutativitatea</span>: A ∪ B = B ∪ A și A ∩ B = B ∩ A</p>
+                    <p>2. <span class="highlight-shadow">Asociativitatea</span>: (A ∪ B) ∪ C = A ∪ (B ∪ C) și (A ∩ B) ∩ C = A ∩ (B ∩ C)</p>
+                    <p>3. <span class="highlight-wave">Distributivitatea</span>: A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) și A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)</p>
+                    <p>4. <span class="highlight-double">Legile lui De Morgan</span>: C_E(A ∪ B) = C_E(A) ∩ C_E(B) și C_E(A ∩ B) = C_E(A) ∪ C_E(B)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exerciții -->
+        <div class="content-section reveal">
+            <h2 class="section-title">Exerciții rezolvate</h2>
+            
+            <div class="exercise-box">
+                <div class="box-title">
+                    <i class="fas fa-pen-alt"></i>
+                    <h3>Exercițiul 1</h3>
+                </div>
+                
+                <div class="exercise-content">
+                    <p><strong>Enunț:</strong> Fie mulțimile <span class="highlight-shadow">A = {1, 2, 3, 4, 5}</span>, <span class="highlight-wave">B = {3, 4, 5, 6, 7}</span> și <span class="highlight-underlined">C = {5, 6, 7, 8, 9}</span>. Calculați:</p>
+                    <p>a) <span class="highlight-dotted">A ∪ B</span></p>
+                    <p>b) <span class="highlight-shadow">A ∩ C</span></p>
+                    <p>c) <span class="highlight-wave">B \ A</span></p>
+                    <p>d) <span class="highlight-double">(A ∪ B) ∩ C</span></p>
+                </div>
+                
+                <button class="solution-btn" onclick="toggleSolution(1)">Vezi rezolvarea</button>
+                
+                <div class="solution" id="solution1">
+                    <h4>Rezolvare:</h4>
+                    <p>a) <span class="highlight-underlined">A ∪ B = {1, 2, 3, 4, 5, 6, 7}</span> (toate elementele din A și B, fără duplicate)</p>
+                    <p>b) <span class="highlight-shadow">A ∩ C = {5}</span> (elementele comune lui A și C)</p>
+                    <p>c) <span class="highlight-wave">B \ A = {6, 7}</span> (elementele din B care nu sunt în A)</p>
+                    <p>d) Mai întâi calculăm <span class="highlight-dotted">A ∪ B = {1, 2, 3, 4, 5, 6, 7}</span></p>
+                    <p>Apoi <span class="highlight-double">(A ∪ B) ∩ C = {1, 2, 3, 4, 5, 6, 7} ∩ {5, 6, 7, 8, 9} = {5, 6, 7}</span></p>
+                </div>
+            </div>
+            
+            <div class="exercise-box">
+                <div class="box-title">
+                    <i class="fas fa-pen-alt"></i>
+                    <h3>Exercițiul 2</h3>
+                </div>
+                
+                <div class="exercise-content">
+                    <p><strong>Enunț:</strong> Fie <span class="highlight-shadow">E = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}</span> mulțimea universală și <span class="highlight-wave">A = {2, 4, 6, 8, 10}</span>, <span class="highlight-underlined">B = {1, 3, 5, 7, 9}</span>. Demonstrați că:</p>
+                    <p>a) <span class="highlight-dotted">A și B sunt disjuncte</span> (A ∩ B = ∅)</p>
+                    <p>b) <span class="highlight-shadow">C_E(A) = B</span></p>
+                    <p>c) <span class="highlight-wave">A ∪ B = E</span></p>
+                </div>
+                
+                <button class="solution-btn" onclick="toggleSolution(2)">Vezi rezolvarea</button>
+                
+                <div class="solution" id="solution2">
+                    <h4>Rezolvare:</h4>
+                    <p>a) <span class="highlight-underlined">A = {numere pare ≤ 10}</span>, <span class="highlight-shadow">B = {numere impare ≤ 10}</span></p>
+                    <p><span class="highlight-wave">A ∩ B = ∅</span> (nu există numere care să fie simultan pare și impare)</p>
+                    <p>b) <span class="highlight-dotted">C_E(A) = E \ A = {1, 3, 5, 7, 9} = B</span></p>
+                    <p>c) <span class="highlight-double">A ∪ B = {numere pare ≤ 10} ∪ {numere impare ≤ 10} = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} = E</span></p>
+                    <p><strong>Concluzie:</strong> A și B sunt <span class="highlight-underlined">complementare</span> în raport cu E.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exerciții BAC -->
+        <div class="bac-section reveal">
+            <h3>Exerciții tip Bacalaureat</h3>
+            
+            <div class="bac-exercise">
+                <p><strong>Subiectul I, Exercițiul 1 (Bac 2020, model)</strong></p>
+                <p>Fie mulțimile <span class="highlight-shadow">A = {x ∈ ℕ | x² < 10}</span> și <span class="highlight-wave">B = {x ∈ ℕ | x este divizor al lui 6}</span>.</p>
+                <p>Mulțimea <span class="highlight-underlined">A ∩ B</span> este egală cu:</p>
+                <p>a) {1, 2, 3} &nbsp;&nbsp; b) {1, 2} &nbsp;&nbsp; c) {2, 3} &nbsp;&nbsp; d) {1, 2, 3, 6}</p>
+                
+                <button class="solution-btn" onclick="toggleSolution(3)">Vezi rezolvarea</button>
+                
+                <div class="solution" id="solution3">
+                    <h4>Rezolvare:</h4>
+                    <p>1. Determinăm mulțimea A:</p>
+                    <p><span class="highlight-shadow">A = {x ∈ ℕ | x² < 10}</span></p>
+                    <p>Numerele naturale cu pătratul mai mic decât 10 sunt: <span class="highlight-wave">0, 1, 2, 3</span> (deoarece 0²=0, 1²=1, 2²=4, 3²=9, iar 4²=16>10)</p>
+                    <p><span class="highlight-underlined">A = {0, 1, 2, 3}</span></p>
+                    
+                    <p>2. Determinăm mulțimea B:</p>
+                    <p><span class="highlight-dotted">B = {x ∈ ℕ | x este divizor al lui 6}</span></p>
+                    <p>Divizorii naturali ai lui 6 sunt: <span class="highlight-shadow">1, 2, 3, 6</span></p>
+                    <p><span class="highlight-wave">B = {1, 2, 3, 6}</span></p>
+                    
+                    <p>3. Calculăm <span class="highlight-double">A ∩ B = {0, 1, 2, 3} ∩ {1, 2, 3, 6} = {1, 2, 3}</span></p>
+                    
+                    <p><strong>Răspuns corect: a) {1, 2, 3}</strong></p>
+                </div>
+            </div>
+            
+            <div class="bac-exercise">
+                <p><strong>Subiectul I, Exercițiul 2 (Bac 2019, varianta oficială)</strong></p>
+                <p>Fie mulțimea <span class="highlight-shadow">A = {1, 2, 3, 4}</span>. Numărul <span class="highlight-wave">submulțimilor cu două elemente</span> ale mulțimii A este:</p>
+                <p>a) 4 &nbsp;&nbsp; b) 6 &nbsp;&nbsp; c) 8 &nbsp;&nbsp; d) 16</p>
+                
+                <button class="solution-btn" onclick="toggleSolution(4)">Vezi rezolvarea</button>
+                
+                <div class="solution" id="solution4">
+                    <h4>Rezolvare:</h4>
+                    <p>Submulțimile cu 2 elemente ale mulțimii <span class="highlight-underlined">A = {1, 2, 3, 4}</span> sunt:</p>
+                    <p><span class="highlight-shadow">{1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}</span></p>
+                    <p>În total sunt <span class="highlight-wave">6 submulțimi</span> cu 2 elemente.</p>
+                    
+                    <p><strong>Metoda combinatorică:</strong></p>
+                    <p>Numărul submulțimilor cu k elemente dintr-o mulțime cu n elemente este dat de combinări de n luate câte k: <span class="highlight-dotted">C_n^k</span></p>
+                    <p>În cazul nostru: <span class="highlight-underlined">n = 4, k = 2</span></p>
+                    <p><span class="highlight-double">C_4^2 = 4!/(2!·2!) = (4·3·2·1)/((2·1)·(2·1)) = 24/4 = 6</span></p>
+                    
+                    <p><strong>Răspuns corect: b) 6</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="#" class="prev"><i class="fas fa-arrow-left"></i> Lecția anterioară</a>
+            <a href="#" class="next">Lecția următoare <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Matematică Liceu</h3>
+                    <p>Cel mai complet site de matematică pentru elevii de liceu. Resurse gratuite pentru clasele 9-12 și pregătirea pentru bacalaureat.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Clasa a IX-a</h3>
+                    <ul>
+                        <li><a href="#">Mulțimi și operații cu mulțimi</a></li>
+                        <li><a href="#">Funcții</a></li>
+                        <li><a href="#">Ecuații și inecuații</a></li>
+                        <li><a href="#">Progresii aritmetice și geometrice</a></li>
+                        <li><a href="#">Trigonometrie</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resurse utile</h3>
+                    <ul>
+                        <li><a href="#">Formule matematice</a></li>
+                        <li><a href="#">Probleme de olimpiadă</a></li>
+                        <li><a href="#">Teste interactive</a></li>
+                        <li><a href="#">Ghid de studiu</a></li>
+                        <li><a href="#">Video-lecții</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Matematică Liceu. Toate drepturile rezervate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcție pentru afișarea/ascunderea soluțiilor
+        function toggleSolution(exerciseNum) {
+            const solution = document.getElementById('solution' + exerciseNum);
+            const button = event.target;
+            
+            solution.classList.toggle('show');
+            
+            if (solution.classList.contains('show')) {
+                button.textContent = 'Ascunde rezolvarea';
+                button.classList.add('active');
+                
+                // Adăugăm o animație pentru fiecare paragraf din soluție
+                const paragraphs = solution.querySelectorAll('p');
+                paragraphs.forEach((p, index) => {
+                    p.style.opacity = '0';
+                    p.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        p.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        p.style.opacity = '1';
+                        p.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+            } else {
+                button.textContent = 'Vezi rezolvarea';
+                button.classList.remove('active');
+            }
+        }
+        
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                    
+                    // Activează animațiile de sublinieri în interiorul elementului
+                    const highlights = element.querySelectorAll('.highlight-underlined, .highlight-shadow, .highlight-dotted, .highlight-double, .highlight-wave');
+                    highlights.forEach((highlight, index) => {
+                        setTimeout(() => {
+                            highlight.classList.add('animate-in');
+                        }, 200 * index);
+                    });
+                }
+            });
+        }
+        
+        // Animație pentru elementele cu sublinieri
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inițializăm reveal on scroll
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Check on load
+            
+            // Adăugăm efecte de hover pentru carduri
+            const cards = document.querySelectorAll('.operation-card, .theory-box, .example-box, .exercise-box');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+            
+            // Animație pentru titluri
+            const titles = document.querySelectorAll('.section-title, .box-title h3');
+            titles.forEach(title => {
+                title.innerHTML = title.textContent.split('').map((char, i) => 
+                    `<span style="display:inline-block; animation: fadeInUp 0.5s ease-out ${i*0.05}s both">${char}</span>`
+                ).join('');
+            });
+            
+            // Efect de undă pentru butoane
+            const buttons = document.querySelectorAll('.solution-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Creăm efectul de undă
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size/2;
+                    const y = e.clientY - rect.top - size/2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        top: ${y}px;
+                        left: ${x}px;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // Activează sublinierile la încărcare pentru elementele deja vizibile
+            setTimeout(() => {
+                const initialHighlights = document.querySelectorAll('.reveal.active .highlight-underlined, .reveal.active .highlight-shadow, .reveal.active .highlight-dotted, .reveal.active .highlight-double, .reveal.active .highlight-wave');
+                initialHighlights.forEach((highlight, index) => {
+                    setTimeout(() => {
+                        highlight.classList.add('animate-in');
+                    }, 300 * index);
+                });
+            }, 1000);
+        });
+        
+        // Adăugăm keyframe pentru efectul de undă
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            /* Animație specială pentru highlight-wave */
+            .highlight-wave.animate-in:after {
+                background-size: 200% 100%;
+                animation: waveUnderline 1s ease-out forwards, waveMotion 2s infinite 1s;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
