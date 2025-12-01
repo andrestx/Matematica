@@ -1,1 +1,816 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mate10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Loading animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.8s, visibility 0.8s;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .formula-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin-bottom: 40px;
+        }
+        
+        .falling-formula {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            opacity: 0;
+            animation: fall 2s forwards;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to right, #1a237e, #4a148c);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #ff9800;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .main-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .main-menu li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .main-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ff9800;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            display: block;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: #1a237e;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(74, 20, 140, 0.9)), url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+        }
+        
+        .cta-button:hover {
+            background-color: #ff5722;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 87, 34, 0.5);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: #1a237e;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ff9800;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #4a148c;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #1a237e;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        /* Grade cards */
+        .grade-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .grade-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .grade-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .grade-header {
+            background: linear-gradient(to right, #1a237e, #4a148c);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .grade-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .grade-content {
+            padding: 1.5rem;
+        }
+        
+        .grade-content ul {
+            list-style: none;
+        }
+        
+        .grade-content li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .grade-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .grade-content a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .grade-content a:hover {
+            color: #1a237e;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1a237e;
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ff9800;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #ff9800;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .main-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                height: 100%;
+                background-color: #1a237e;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                padding: 2rem;
+                overflow-y: auto;
+            }
+            
+            .mobile-menu.active {
+                left: 0;
+            }
+            
+            .mobile-menu-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                cursor: pointer;
+            }
+            
+            .mobile-menu ul {
+                list-style: none;
+                margin-top: 2rem;
+            }
+            
+            .mobile-menu ul li {
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-menu a {
+                color: white;
+                text-decoration: none;
+                font-size: 1.2rem;
+                display: block;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="formula-container" id="formulaContainer">
+            <!-- Formulele vor fi adăugate din JavaScript -->
+        </div>
+        <div class="loading-text" id="loadingText">Se încarcă resursele de matematică...</div>
+    </div>
 
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Matematică Liceu</span>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="main-menu">
+                    <li><a href="#home">Acasă</a></li>
+                    <li class="dropdown">
+                        <a href="#">Clasa IX <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Mulțimi și operații cu mulțimi</a>
+                            <a href="#">Funcții</a>
+                            <a href="#">Ecuații și inecuații</a>
+                            <a href="#">Progresii aritmetice și geometrice</a>
+                            <a href="#">Trigonometrie</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Clasa X <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Funcții și ecuații exponențiale</a>
+                            <a href="#">Funcții și ecuații logaritmice</a>
+                            <a href="#">Funcții trigonometrice</a>
+                            <a href="#">Geometrie analitică</a>
+                            <a href="#">Permutări, aranjamente, combinări</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Clasa XI <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Șiruri de numere reale</a>
+                            <a href="#">Limite de funcții</a>
+                            <a href="#">Funcții continue</a>
+                            <a href="#">Derivate</a>
+                            <a href="#">Aplicații ale derivatelor</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Clasa XII <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Primitive</a>
+                            <a href="#">Integrale definite</a>
+                            <a href="#">Aplicații ale integralelor</a>
+                            <a href="#">Elemente de algebră liniară</a>
+                            <a href="#">Teste pentru bacalaureat</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Bacalaureat <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#">Subiecte propuse</a>
+                            <a href="#">Subiecte rezolvate</a>
+                            <a href="#">Teorie pentru bac</a>
+                            <a href="#">Teste simulare</a>
+                            <a href="#">Statistici și rezultate</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="#home">Acasă</a></li>
+                <li><a href="#">Clasa IX</a></li>
+                <li><a href="#">Clasa X</a></li>
+                <li><a href="#">Clasa XI</a></li>
+                <li><a href="#">Clasa XII</a></li>
+                <li><a href="#">Bacalaureat</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Matematică pentru Liceu</h1>
+            <p>Resurse complete pentru elevii de liceu (clasele 9-12) și pregătirea pentru examenul de bacalaureat. Teorie, exerciții rezolvate, teste și simulări.</p>
+            <a href="#grades" class="cta-button">Explorează materia</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Features Section -->
+        <section class="content-section">
+            <h2 class="section-title">De ce să alegi acest site?</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Teorie completă</h3>
+                    <p>Toate capitolele din programa școlară, explicate pas cu pas, cu exemple și aplicații.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Exerciții rezolvate</h3>
+                    <p>Mii de probleme rezolvate pas cu pas, de la cele simple până la cele de olimpiadă.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Pregătire pentru Bac</h3>
+                    <p>Subiecte rezolvate, teste tip examen și sfaturi pentru obținerea notei maxime.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grade Levels Section -->
+        <section class="content-section" id="grades">
+            <h2 class="section-title">Materia pe clase</h2>
+            <div class="grade-cards">
+                <!-- Clasa IX -->
+                <div class="grade-card">
+                    <div class="grade-header">
+                        <h3>Clasa IX</h3>
+                        <p>Algebra și Geometrie</p>
+                    </div>
+                    <div class="grade-content">
+                        <ul>
+                            <li><a href="#">Mulțimi și operații cu mulțimi <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Funcții <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Ecuații și inecuații <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Progresii aritmetice și geometrice <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Trigonometrie <i class="fas fa-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Clasa X -->
+                <div class="grade-card">
+                    <div class="grade-header">
+                        <h3>Clasa X</h3>
+                        <p>Funcții și Geometrie analitică</p>
+                    </div>
+                    <div class="grade-content">
+                        <ul>
+                            <li><a href="#">Funcții exponențiale și logaritmice <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Funcții trigonometrice <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Geometrie analitică <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Combinatorică <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Teste și evaluări <i class="fas fa-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Clasa XI -->
+                <div class="grade-card">
+                    <div class="grade-header">
+                        <h3>Clasa XI</h3>
+                        <p>Analiză matematică</p>
+                    </div>
+                    <div class="grade-content">
+                        <ul>
+                            <li><a href="#">Șiruri de numere reale <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Limite de funcții <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Funcții continue <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Derivate <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Aplicații ale derivatelor <i class="fas fa-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Clasa XII -->
+                <div class="grade-card">
+                    <div class="grade-header">
+                        <h3>Clasa XII</h3>
+                        <p>Integrale și Algebra liniară</p>
+                    </div>
+                    <div class="grade-content">
+                        <ul>
+                            <li><a href="#">Primitive <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Integrale definite <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Aplicații ale integralelor <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Algebra liniară <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Teste pentru bacalaureat <i class="fas fa-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Bacalaureat -->
+                <div class="grade-card">
+                    <div class="grade-header">
+                        <h3>Bacalaureat</h3>
+                        <p>Pregătire pentru examen</p>
+                    </div>
+                    <div class="grade-content">
+                        <ul>
+                            <li><a href="#">Subiecte propuse <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Subiecte rezolvate <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Teorie pentru bac <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Teste simulare <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#">Statistici și rezultate <i class="fas fa-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Matematică Liceu</h3>
+                    <p>Cel mai complet site de matematică pentru elevii de liceu. Resurse gratuite pentru clasele 9-12 și pregătirea pentru bacalaureat.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Linkuri rapide</h3>
+                    <ul>
+                        <li><a href="#">Acasă</a></li>
+                        <li><a href="#">Clasa IX</a></li>
+                        <li><a href="#">Clasa X</a></li>
+                        <li><a href="#">Clasa XI</a></li>
+                        <li><a href="#">Clasa XII</a></li>
+                        <li><a href="#">Bacalaureat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resurse utile</h3>
+                    <ul>
+                        <li><a href="#">Formule matematice</a></li>
+                        <li><a href="#">Probleme de olimpiadă</a></li>
+                        <li><a href="#">Teste interactive</a></li>
+                        <li><a href="#">Ghid de studiu</a></li>
+                        <li><a href="#">Video-lecții</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> contact@matematicabac.ro</li>
+                        <li><i class="fas fa-phone"></i> +40 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> București, România</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Matematică Liceu. Toate drepturile rezervate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const formulaContainer = document.getElementById('formulaContainer');
+            const loadingText = document.getElementById('loadingText');
+            
+            // Lista de formule matematice care vor cădea
+            const formulas = [
+                "a² + b² = c²",
+                "π ≈ 3.14159",
+                "e = mc²",
+                "sin²x + cos²x = 1",
+                "A = πr²",
+                "V = l³",
+                "ax² + bx + c = 0",
+                "F = ma",
+                "E = mc²",
+                "a³ + b³ = (a+b)(a²-ab+b²)"
+            ];
+            
+            // Adaugă formulele pe ecran cu animație de cădere
+            formulas.forEach((formula, index) => {
+                const formulaElement = document.createElement('div');
+                formulaElement.className = 'falling-formula';
+                formulaElement.textContent = formula;
+                formulaElement.style.left = `${10 + (index % 5) * 20}%`;
+                formulaElement.style.animationDelay = `${index * 0.5}s`;
+                formulaContainer.appendChild(formulaElement);
+            });
+            
+            // Schimbă textul de încărcare
+            const loadingMessages = [
+                "Se încarcă resursele de matematică...",
+                "Se pregătesc formulele...",
+                "Se încarcă exercițiile...",
+                "Aproape gata..."
+            ];
+            
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                loadingText.textContent = loadingMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            }, 1500);
+            
+            // Ascunde animația de încărcare după 5 secunde
+            setTimeout(() => {
+                clearInterval(messageInterval);
+                loadingOverlay.classList.add('hidden');
+            }, 5000);
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+            });
+            
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
