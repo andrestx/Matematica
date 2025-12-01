@@ -975,45 +975,7 @@
                 }, 500);
             }, minLoadingTime + Math.random() * (maxLoadingTime - minLoadingTime));
 
-            // Mobile menu functionality (păstrează aceeași funcționalitate)
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenuClose = document.getElementById('mobileMenuClose');
-            const mobileMenu = document.getElementById('mobileMenu');
-
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.add('active');
-            });
-
-            mobileMenuClose.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-            });
-
-            // Close mobile menu when clicking on a link
-            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                });
-            });
-
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
+            
 
         
         const mobileMenuClose = document.getElementById('mobileMenuClose');
